@@ -1,0 +1,5 @@
+ultralytics==8.0.114
+pandas==2.0.2
+numpy==1.24.3
+scipy==1.10.1
+filterpy==1.4.5
