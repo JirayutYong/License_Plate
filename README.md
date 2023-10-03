@@ -1,1 +1,1 @@
-# Frist pip install follow requirements.txt
+# pip install follow requirements.txt
