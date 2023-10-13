@@ -148,7 +148,39 @@ for filename in input_files:
                         #_,license_plate_crop_thresh = cv2.threshold(license_plate_crop_gray, 64, 255, cv2.THRESH_BINARY_INV)
                         recognition_output = license_plate_recognition.predict(source="save_license", conf=0.25,save=True)
 
-                        # Display Output
+                        result = recognition_output[0]
+                        box = result.boxes[0]
+                        #l = len(result.boxes)
+
+
+                        objects = []
+                        for box in result.boxes:
+                            class_id = result.names[box.cls[0].item()]
+                            cords = box.xyxy[0].tolist()
+                            cords = [round(x) for x in cords]
+                            conf = round(box.conf[0].item(), 2)
+
+                            # เก็บข้อมูลในลิสต์
+                            objects.append({
+                                "class_id": class_id,
+                                "coordinates": cords,
+                                "probability": conf
+                            })
+
+                        # เรียง x ของ Coordinates
+                        sorted_objects = sorted(objects, key=lambda x: x["coordinates"][0])
+
+
+                        # print class ตามตำแหน่งป้ายทะเบียน
+                        result_string = "ตัวอักษร : "
+                        for obj in sorted_objects:
+                            result_string += obj["class_id"]
+                            #print("Coordinates:", obj["coordinates"])
+                            #print("Probability:", obj["probability"])
+                            #print("---")
+
+                        print(result_string)
+
                         #cv2.namedWindow('input', cv2.WINDOW_NORMAL)
                         #cv2.resizeWindow('input', 900, 600)
                         #cv2.imshow('input', image)
